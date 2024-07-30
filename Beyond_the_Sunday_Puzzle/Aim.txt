@@ -1,0 +1,13 @@
+Developed in XCode and run using the default c++ compiler, my clang version being 15.0.0, it fully 
+supports all of standard C++98, C++11, C++14, and C++17, and it implements most of C++20 features(mostly).
+(I believe C++17 is implemented in the course)
+
+This program reads a matrix of characters and a list of words, then searches for each word in the matrix 
+in all possible directions (right, left, down, up, and diagonals). It calculates and outputs a score based 
+on the success of finding each word. Points are awarded based on the length of the word and the direction of 
+the search, with additional points for longer words and penalties for words not found.
+
+The arrays dx and dy are used to define the possible directions in which we can move from any given position 
+in the matrix. Each index in these arrays corresponds to a particular direction, and together they form pairs 
+of changes in the x (horizontal) and y (vertical) coordinates. As it was the most efficient way I know 
+to solve a grid problem(Got the idea from "79.Word Search" problem from leetcode.com(leetcode id: Defalt978)).
