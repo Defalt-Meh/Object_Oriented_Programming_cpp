@@ -1,48 +1,10 @@
 #include "BankSystem.h"
+#include <fstream>
+#include <sstream>
 
-// Account class definitions
-Account::Account(int num, const string& name, double bal) 
-    : accountNumber(num), owner(name), balance(bal) {}
+// Account class definitions (unchanged)
 
-int Account::getAccountNumber() const { return accountNumber; }
-string Account::getOwner() const { return owner; }
-double Account::getBalance() const { return balance; }
-
-void Account::deposit(double amount) {
-    if (amount > 0) {
-        balance += amount;
-    }
-}
-
-bool Account::withdraw(double amount) {
-    if (amount > 0 && amount <= balance) {
-        balance -= amount;
-        return true;
-    }
-    return false;
-}
-
-void Account::displayAccount() const {
-    cout << "Account Number: " << accountNumber << endl;
-    cout << "Owner: " << owner << endl;
-    cout << "Balance: $" << balance << endl;
-}
-
-// Transaction class definitions
-Transaction::Transaction(int id, int accNum, const string& transType, double amt) 
-    : transactionID(id), accountNumber(accNum), type(transType), amount(amt) {}
-
-int Transaction::getTransactionID() const { return transactionID; }
-int Transaction::getAccountNumber() const { return accountNumber; }
-string Transaction::getType() const { return type; }
-double Transaction::getAmount() const { return amount; }
-
-void Transaction::displayTransaction() const {
-    cout << "Transaction ID: " << transactionID << endl;
-    cout << "Account Number: " << accountNumber << endl;
-    cout << "Type: " << type << endl;
-    cout << "Amount: $" << amount << endl;
-}
+// Transaction class definitions (unchanged)
 
 // Bank class definitions
 Bank::Bank() : nextAccountNumber(1), nextTransactionID(1) {}
@@ -100,4 +62,50 @@ void Bank::displayTransactions() const {
 
 void Bank::recordTransaction(int accountNumber, const string& type, double amount) {
     transactions.push_back(Transaction(nextTransactionID++, accountNumber, type, amount));
+}
+
+void Bank::loadAccountsFromFile(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error opening file: " << filename << endl;
+        return;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        istringstream ss(line);
+        string owner;
+        double balance;
+        getline(ss, owner, ',');
+        ss >> balance;
+        addAccount(owner, balance);
+    }
+    file.close();
+}
+
+void Bank::loadTransactionsFromFile(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error opening file: " << filename << endl;
+        return;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        istringstream ss(line);
+        int accountNumber;
+        string type;
+        double amount;
+        ss >> accountNumber;
+        ss.ignore(1, ',');
+        getline(ss, type, ',');
+        ss >> amount;
+        
+        if (type == "Deposit") {
+            deposit(accountNumber, amount);
+        } else if (type == "Withdrawal") {
+            withdraw(accountNumber, amount);
+        }
+    }
+    file.close();
 }
