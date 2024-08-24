@@ -1,0 +1,13 @@
+The purpose of this Bank Management System program is to simulate basic banking operations 
+using object-oriented programming in C++. It manages accounts and transactions, allowing users
+to add accounts, deposit and withdraw funds, and track transactions.
+
+Key functionalities include:
+  -Account Management: Create and remove accounts with initial balances.
+  -Transaction Processing: Handle deposits and withdrawals, recording each transaction.
+  -Data Display: Show current account details and transaction history.
+
+The program reads data from files to initialize accounts and transactions, making it easy to
+test various scenarios and ensure accurate financial operations. This simple yet effective system
+demonstrates core OOP principles such as encapsulation, inheritance, and polymorphism in a practical
+application.
