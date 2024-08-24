@@ -4,41 +4,73 @@
 #include <string>
 #include <chrono>
 #include <mutex>
+#include <iomanip> // For std::setw
 
 using namespace std::chrono_literals;
 
-// Mutex for thread safety
-std::mutex mapMutex;
+class WeatherForecast {
+public:
+    WeatherForecast(const std::map<std::string, int>& initialData)
+        : forecastMap(initialData), running(true) {
+        refreshThread = std::thread(&WeatherForecast::RefreshForecast, this);
+    }
 
-void RefreshForecast(std::map<std::string, int>& forecastMap) {
-    while (true) {
-        {
-            // Lock the mutex to safely access the shared map
+    ~WeatherForecast() {
+        StopRefreshing();
+    }
+
+    void StopRefreshing() {
+        if (running) {
+            running = false;
+            if (refreshThread.joinable()) {
+                refreshThread.join();
+            }
+        }
+    }
+
+private:
+    std::map<std::string, int> forecastMap;
+    std::thread refreshThread;
+    std::mutex mapMutex;
+    bool running;
+
+    void RefreshForecast() {
+        while (running) {
+            {
+                std::lock_guard<std::mutex> lock(mapMutex);
+                std::cout << std::left << std::setw(15) << "Location" << " - " << "Temperature" << std::endl;
+                for (const auto& item : forecastMap) {
+                    std::cout << std::left << std::setw(15) << item.first << " - " << item.second << "°C" << std::endl;
+                }
+                std::cout << std::string(30, '-') << std::endl;
+            }
+            std::this_thread::sleep_for(2s);
+            
+            // Update temperatures
             std::lock_guard<std::mutex> lock(mapMutex);
             for (auto& item : forecastMap) {
                 item.second++;
-                std::cout << item.first << " - " << item.second << std::endl;
             }
         }
-        std::this_thread::sleep_for(2000ms);
     }
-}
+};
 
 int main() {
-    std::map<std::string, int> forecastMap = {
+    // Initialize forecast data
+    std::map<std::string, int> initialData = {
         {"New York", 15},
         {"Mumbai", 20},
         {"Berlin", 18}
     };
 
-    // Pass map by reference to avoid copying
-    std::thread bgWorker(RefreshForecast, std::ref(forecastMap));
-    
-    // Let the background thread run for some time
-    std::this_thread::sleep_for(10000ms); // 10 seconds
+    // Create and start the WeatherForecast object
+    WeatherForecast forecast(initialData);
 
-    // Detach or join the thread to ensure proper cleanup
-    bgWorker.join();
-    
+    // Let the background thread run for 10 seconds
+    std::this_thread::sleep_for(10s);
+
+    // Stop the background thread and cleanup
+    forecast.StopRefreshing();
+
     return 0;
 }
