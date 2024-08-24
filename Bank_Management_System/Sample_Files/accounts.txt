@@ -1,0 +1,4 @@
+Alice,500.00
+Bob,300.00
+Charlie,150.00
+Diana,600.00
