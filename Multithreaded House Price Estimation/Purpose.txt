@@ -1,0 +1,14 @@
+Developed in XCode and run using the default c++ compiler, my clang version being 15.0.0, it fully
+supports all of standard C++98, C++11, C++14, and C++17, and it implements most of C++20 features.
+
+ This program is a sophisticated implementation designed to process vast amounts of district data in a 
+ quest to find the top three districts that most closely resemble the user's specified house attributes.
+ Employing the ancient strategy of "Divide et Impera" (Divide and Conquer), the program leverages multithreading
+ to break down the complex task of comparing thousands of districts into manageable, parallelized operations. Each
+ thread independently calculates a dissimilarity metric, assessing how closely each district matches the user's input.
+
+ As the threads race through their workloads, the program meticulously synchronizes access to shared resources, 
+ ensuring that no data is corrupted and that the results are accurate. Upon completion, the most similar districts
+ are identified, and their median prices are averaged to provide a clear picture of what the user might expect to pay
+ for a house with similar features. The result is a powerful, efficient, and elegant solution that embodies the spirit of
+ "Divide et Impera," turning a daunting task into a well-orchestrated analysis.
