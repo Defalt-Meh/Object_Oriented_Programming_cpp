@@ -1,4 +1,4 @@
-The Fellowship of the Code: A C++ OOP Adventure
+# The Fellowship of the Code: A C++ OOP Adventure
 
 Welcome, brave coder, to the mythical repository of C++ Object-Oriented Programming! I’m an undergrad, questing through the lands of academia, battling the dark forces of compiler errors and the orcs of debugging.
 
