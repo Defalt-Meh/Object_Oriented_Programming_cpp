@@ -2,7 +2,7 @@
 
 Welcome, brave coder, to the mythical repository of C++ Object-Oriented Programming! I’m an undergrad, questing through the lands of academia, battling the dark forces of compiler errors and the orcs of debugging.
 
-One Repo to Rule Them All
+## One Repo to Rule Them All
 
 In the land of coursework, in the fires of my dorm room, I forged this repository. It is destined to be your guide through the treacherous paths of C++ OOP. Here, you’ll find:
 
